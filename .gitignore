@@ -1,0 +1,8 @@
+## venv, settings, cache, etc
+venv
+.config
+*.pyc
+
+## IDE and editors
+.idea
+.code
