@@ -30,7 +30,8 @@ def login():
     Redirects the user to the Auth0 Universal Login (https://auth0.com/docs/authenticate/login/auth0-universal-login)
     """
     return oauth.auth0.authorize_redirect(
-        redirect_uri=url_for("auth.callback", _external=True)
+        redirect_uri=url_for("auth.callback", _external=True),
+        audience=auth0_config["AUDIENCE"]
     )
 
 
@@ -41,7 +42,8 @@ def signup():
     """
     return oauth.auth0.authorize_redirect(
         redirect_uri=url_for("auth.callback", _external=True),
-        screen_hint="signup"
+        screen_hint="signup",
+        audience=auth0_config["AUDIENCE"]
     )
 
 
