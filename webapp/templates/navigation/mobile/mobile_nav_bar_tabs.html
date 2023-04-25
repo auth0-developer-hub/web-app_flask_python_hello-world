@@ -10,6 +10,8 @@
 <div class="mobile-nav-bar__tabs">
   {{ tab(label="Profile", path=url_for('webapp.profile')) }}
   {{ tab(label="Public", path=url_for('webapp.public')) }}
-  {{ tab(label="Protected", path=url_for('webapp.protected')) }}
-  {{ tab(label="Admin", path=url_for('webapp.admin')) }}
+  {% if session.user %}
+    {{ tab(label="Protected", path=url_for('webapp.protected')) }}
+    {{ tab(label="Admin", path=url_for('webapp.admin')) }}
+  {% endif %}
 </div>

@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, session
 
 from services.message_service import MessageService
+from auth.decorators import requires_auth
 
 webapp_bp = Blueprint('webapp', __name__, template_folder="templates")
 
@@ -52,24 +53,16 @@ def public():
 
 
 @webapp_bp.route("/profile")
+@requires_auth
 def profile():
     """
     Unprotected endpoint which displays your profile if you are logged in, otherwise it prompts the user to log in
     """
-    user_profile = {
-        "nickname": "Customer",
-        "name": "One Customer",
-        "picture": "https://cdn.auth0.com/blog/hello-auth0/auth0-user.png",
-        "updated_at": "2021-05-04T21:33:09.415Z",
-        "email": "customer@example.com",
-        "email_verified": False,
-        "sub": "auth0|12345678901234567890"
-    }
-
-    return render_template('profile.html', user_profile=user_profile)
+    return render_template('profile.html', user_profile=session.get('user').get("userinfo"))
 
 
 @webapp_bp.route("/protected")
+@requires_auth
 def protected():
     """
     Unprotected endpoint which displays your profile if you are logged in, otherwise it prompts the user to log in
@@ -78,6 +71,7 @@ def protected():
 
 
 @webapp_bp.route("/admin")
+@requires_auth
 def admin():
     """
     Unprotected endpoint which displays your profile if you are logged in, otherwise it prompts the user to log in

@@ -1,4 +1,4 @@
-# Flask/Python: Starter Web App Code Sample
+# Flask/Python: User Authentication Code Sample
 
 This Python code sample demonstrates how to build web applications using Flask.
 
