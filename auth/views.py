@@ -12,6 +12,8 @@ oauth = OAuth(current_app)
 domain = auth0_config["DOMAIN"]
 client_id = auth0_config["CLIENT_ID"]
 client_secret = auth0_config["CLIENT_SECRET"]
+audience = auth0_config["AUDIENCE"]
+scope="openid profile email read:admin-messages"
 
 oauth.register(
     "auth0",
@@ -30,7 +32,9 @@ def login():
     Redirects the user to the Auth0 Universal Login (https://auth0.com/docs/authenticate/login/auth0-universal-login)
     """
     return oauth.auth0.authorize_redirect(
-        redirect_uri=url_for("auth.callback", _external=True)
+        redirect_uri=url_for("auth.callback", _external=True),
+        audience=audience,
+        scope="openid profile email read:admin-messages"
     )
 
 
@@ -43,17 +47,6 @@ def signup():
         redirect_uri=url_for("auth.callback", _external=True),
         screen_hint="signup"
     )
-
-
-@auth_bp.route("/callback", methods=["GET", "POST"])
-def callback():
-    """
-    Callback redirect from Auth0
-    """
-    token = oauth.auth0.authorize_access_token()
-    session["user"] = token
-    # The app assumes for a /profile path to be available, change here if it's not
-    return redirect("/profile")
 
 
 @auth_bp.route("/logout")
@@ -73,3 +66,14 @@ def logout():
             quote_via=quote_plus,
         )
     )
+
+
+@auth_bp.route("/callback", methods=["GET", "POST"])
+def callback():
+    """
+    Callback redirect from Auth0
+    """
+    token = oauth.auth0.authorize_access_token()
+    session["user"] = token
+    # The app assumes for a /profile path to be available, change here if it's not
+    return redirect("/profile")

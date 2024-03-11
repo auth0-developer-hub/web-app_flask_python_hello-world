@@ -58,7 +58,10 @@ def profile():
     """
     Unprotected endpoint which displays your profile if you are logged in, otherwise it prompts the user to log in
     """
-    return render_template('profile.html', user_profile=session.get('user').get("userinfo"))
+    print(session.get('user').get('access_token'))
+    return render_template('profile.html', 
+                           user_profile=session.get('user').get("userinfo"),
+                           id_token=session.get('user').get("id_token"))
 
 
 @webapp_bp.route("/protected")
